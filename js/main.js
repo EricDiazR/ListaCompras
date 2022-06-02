@@ -118,7 +118,12 @@ agregar.addEventListener("click", (event)=>{
         txtNombre.value="";
         txtNumber.value="";
         txtNombre.focus();
-        }
+
+      //almacenamiento
+        localStorage.setItem("contadorProductos",contador);
+        localStorage.setItem("productosTotal",totalEnProductos);
+        localStorage.setItem("costoTotal",costoTotal);
+      }
 );
 txtNombre.addEventListener("blur",(event)=>{
     event.target.value=event.target.value.trim();//objeto
@@ -127,4 +132,21 @@ txtNombre.addEventListener("blur",(event)=>{
 txtNumber.addEventListener("blur",(event)=>{
   event.target.value=event.target.value.trim();//objeto
   }
+);
+window.addEventListener("load",function(){
+    if(localStorage.getItem("contadorProductos")!=null){
+      contador=parseInt(localStorage.getItem("contadorProductos"));
+      document.getElementById("contadorProductos").innerHTML=contador;
+    }
+    if(localStorage.getItem("productosTotal")!=null){
+      totalEnProductos=parseFloat(localStorage.getItem("productosTotal"));
+      document.getElementById("productosTotal").innerHTML=totalEnProductos;
+    }
+    if(localStorage.getItem("costoTotal")!=null){
+      costoTotal=parseFloat(localStorage.getItem("costoTotal"));
+      document.getElementById("precioTotal").innerHTML=costoTotal;
+      console.log(costoTotal);
+    }
+
+}
 );
