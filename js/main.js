@@ -68,6 +68,7 @@ let agregar = document.getElementById("botonAgregar");
 let total = document.getElementById("precioTotal");
 let contador = 0;
 let costoTotal=0;
+let totalEnProductos=0;
 agregar.addEventListener("click", (event)=>{
         event.preventDefault();
         if((! validarNombre()) || (! validarCantidad())){
@@ -99,9 +100,10 @@ agregar.addEventListener("click", (event)=>{
         document.getElementById("alertValidaciones").style.display="none";
         contador++;
         document.getElementById("contadorProductos").innerHTML=contador;
-        let precio = (Math.floor((Math.random()*50)*100))/100;//para solo 2 decimales, multiplicar 
-        //por 100, math.floor y luego dividir entre 100.
+        let precio = (Math.floor((Math.random()*50)*100))/100;
         let cantidad = parseFloat(txtNumber.value);
+        totalEnProductos += (cantidad<1)?Math.ceil(cantidad):parseInt(cantidad);
+        document.getElementById("productosTotal").innerHTML=totalEnProductos; 
         costoTotal = costoTotal+(precio*cantidad);
         costoTotal = (Math.ceil(costoTotal*100))/100;
         total.innerHTML = `$ ${costoTotal}`;
@@ -112,20 +114,17 @@ agregar.addEventListener("click", (event)=>{
               <td>$ ${precio}</td>
             </tr>
         `
-        //console.log(tmp);
         cuerpoTabla[0].innerHTML += tmp;
         txtNombre.value="";
         txtNumber.value="";
         txtNombre.focus();
         }
 );
-
-
 txtNombre.addEventListener("blur",(event)=>{
     event.target.value=event.target.value.trim();//objeto
   }
 );
 txtNumber.addEventListener("blur",(event)=>{
   event.target.value=event.target.value.trim();//objeto
-}
+  }
 );
