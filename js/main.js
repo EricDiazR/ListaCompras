@@ -6,7 +6,9 @@ let txtNombre = document.getElementById("Name");
 //console.log(txtNombre.value);
 
 let campos = document.getElementsByClassName("campo");
-let txtNumber = document.getElementById("Number")
+let txtNumber = document.getElementById("Number");
+//arreglo global para almacenar la lista de compras.
+let datos = [];
 //campos[0].value = "Leche descremada deslactosada light=agua"
 //console.log(campos[0].value);
 //console.log(campos);
@@ -45,9 +47,9 @@ cuerpoTabla[0].innerHTML = `
 */
 function validarNombre(){
     if(txtNombre.value.length<3){
-      return false
+      return false;
     }
-    return true
+    return true;
 }
 
 function validarCantidad() {
@@ -107,6 +109,15 @@ agregar.addEventListener("click", (event)=>{
         costoTotal = costoTotal+(precio*cantidad);
         costoTotal = (Math.ceil(costoTotal*100))/100;
         total.innerHTML = `$ ${costoTotal}`;
+        //JSON
+        let elemento= `{"id":${contador}, 
+          "nombre":"${txtNombre.value}", 
+          "cantidad":${txtNumber.value}, 
+          "precio":${precio}
+        }`;
+
+        datos.push(JSON.parse(elemento));
+        console.log(datos);
         let tmp = `<tr>
               <th scope="row">${contador}</th>
               <td>${txtNombre.value}</td>
@@ -120,9 +131,10 @@ agregar.addEventListener("click", (event)=>{
         txtNombre.focus();
 
       //almacenamiento
-        localStorage.setItem("contadorProductos",contador);
-        localStorage.setItem("productosTotal",totalEnProductos);
-        localStorage.setItem("costoTotal",costoTotal);
+            localStorage.setItem("contadorProductos",contador);
+            localStorage.setItem("productosTotal",totalEnProductos);
+            localStorage.setItem("costoTotal",costoTotal);
+            localStorage.setItem("elementosTabla",JSON.stringify(datos));
       }
 );
 txtNombre.addEventListener("blur",(event)=>{
@@ -146,6 +158,17 @@ window.addEventListener("load",function(){
       costoTotal=parseFloat(localStorage.getItem("costoTotal"));
       document.getElementById("precioTotal").innerHTML=costoTotal;
       console.log(costoTotal);
+    }
+    if(localStorage.getItem("elementosTabla")!=null){
+      datos = JSON.parse(localStorage.getItem("elementosTabla"));
+      datos.forEach(element => {
+        cuerpoTabla[0].innerHTML +=  `<tr>
+                <th scope="row">${element.id}</th>
+                <td>${element.nombre}</td>
+                <td>${element.cantidad}</td>
+                <td>$ ${element.precio}</td>
+              </tr>`;
+      });
     }
 
 }
